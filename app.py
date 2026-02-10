@@ -6,157 +6,203 @@ import seaborn as sns
 import os
 import io
 
-# ----------------------------
-# Page Configuration
-# ----------------------------
+# =========================
+# PAGE CONFIG (MUST BE FIRST)
+# =========================
 st.set_page_config(
     page_title="Social Media Engagement Analysis",
     layout="wide"
 )
 
-st.title("📊 Social Media Engagement Analysis")
-st.markdown("""
-**Name:** Anthony Djiady Djie  
-**Class:** DS39+  
-**Topic:** EC 3 (Social Media Engagement)
-""")
+# =========================
+# SIDEBAR NAVIGATION
+# =========================
+st.sidebar.title("Pengaturan & Navigasi")
 
-# Load data
+page = st.sidebar.radio(
+    "Pilih Halaman:",
+    ["Profil", "Dashboard"]
+)
+
+# =========================
+# LOAD DATA
+# =========================
 @st.cache_data
 def load_data():
-    df = pd.read_csv(os.path.join("data", "social_media_engagement.csv"))
-
-    return df
+    return pd.read_csv(os.path.join("data", "social_media_engagement.csv"))
 
 df = load_data()
 
-# ----------------------------
-# Dataset Overview
-# ----------------------------
-st.header("📁 Dataset Overview")
+# =========================
+# PAGE 1: PROFIL
+# =========================
+if page == "Profil":
+    st.title("Tentang Saya")
 
-st.subheader("Preview Data")
-st.dataframe(df.head())
+    st.subheader("Siapa Anthony?")
+    st.write(
+        """
+        Halo! Saya **Anthony Djiady Djie**,  
+        seorang Data Science Bootcamp student di **Dibimbing.id** yang sedang
+        membangun portfolio menggunakan **Streamlit**.
 
-st.subheader("Dataset Information")
-buffer = io.StringIO()
-df.info(buf=buffer)
-st.text(buffer.getvalue())
+        Project ini dibuat untuk menganalisis **Social Media Engagement**
+        secara interaktif dan mudah dipahami oleh pengguna non-teknis.
+        """
+    )
 
-st.subheader("Descriptive Statistics")
-st.dataframe(df.describe())
+    st.markdown("---")
 
-st.subheader("Missing Values")
-st.dataframe(df.isnull().sum())
+    st.subheader("Project Info")
+    st.write("""
+    - **Topik**: Social Media Engagement  
+    - **Class**: DS39+ Dibimbing.id  
+    - **Tools**: Python, Pandas, Streamlit  
+    """)
 
-# ----------------------------
-# Data Cleaning
-# ----------------------------
-st.header("🧹 Data Cleaning")
+# =========================
+# PAGE 2: DASHBOARD
+# =========================
+elif page == "Dashboard":
+    st.title("📊 Social Media Engagement Analysis")
 
-numeric_cols = ['likes_count', 'comments_count', 'shares_count', 'impressions']
+    st.markdown("""
+    **Name:** Anthony Djiady Djie  
+    **Class:** DS39+  
+    **Topic:** EC 3 (Social Media Engagement)
+    """)
 
-for col in numeric_cols:
-    if col in df.columns:
-        df[col] = df[col].fillna(0)
+    # ----------------------------
+    # DATASET OVERVIEW
+    # ----------------------------
+    st.header("📁 Dataset Overview")
 
-st.success("Missing values in numeric columns have been handled")
+    st.subheader("Preview Data")
+    st.dataframe(df.head())
 
-# ----------------------------
-# Feature Engineering
-# ----------------------------
-st.header("📐 Engagement Metrics")
+    st.subheader("Dataset Information")
+    buffer = io.StringIO()
+    df.info(buf=buffer)
+    st.text(buffer.getvalue())
 
-# Interactions
-df['interactions'] = (
-    df['likes_count'] +
-    df['comments_count'] +
-    df['shares_count']
-)
+    st.subheader("Descriptive Statistics")
+    st.dataframe(df.describe())
 
-# Interaction per Impression
-df['interaction_per_impression'] = (
-    df['interactions'] / df['impressions']
-) * 100
+    st.subheader("Missing Values")
+    st.dataframe(df.isnull().sum())
 
-st.subheader("Calculated Metrics (Preview)")
-st.dataframe(
-    df[['likes_count', 'comments_count', 'shares_count',
-        'interactions', 'interaction_per_impression']].head()
-)
+    # ----------------------------
+    # DATA CLEANING
+    # ----------------------------
+    st.header("🧹 Data Cleaning")
 
-# ----------------------------
-# Metric Summary
-# ----------------------------
-st.header("📌 Metrics Summary")
+    numeric_cols = [
+        'likes_count',
+        'comments_count',
+        'shares_count',
+        'impressions'
+    ]
 
-col1, col2 = st.columns(2)
+    for col in numeric_cols:
+        if col in df.columns:
+            df[col] = df[col].fillna(0)
 
-col1.metric(
-    "Average Engagement Rate",
-    f"{df['engagement_rate'].mean():.2f}%"
-)
+    st.success("Missing values in numeric columns have been handled")
 
-col2.metric(
-    "Average Interaction per Impression",
-    f"{df['interaction_per_impression'].mean():.2f}%"
-)
+    # ----------------------------
+    # FEATURE ENGINEERING
+    # ----------------------------
+    st.header("📐 Engagement Metrics")
 
-# ----------------------------
-# Visualization
-# ----------------------------
-st.header("📊 Visual Analysis")
+    df['interactions'] = (
+        df['likes_count'] +
+        df['comments_count'] +
+        df['shares_count']
+    )
 
-metric_choice = st.selectbox(
-    "Select metric to visualize:",
-    ['engagement_rate', 'interaction_per_impression']
-)
+    df['interaction_per_impression'] = (
+        df['interactions'] / df['impressions']
+    ) * 100
 
-bin_size = st.slider(
-    "Select number of bins:",
-    min_value=10,
-    max_value=60,
-    value=30,
-    step=5
-)
+    st.subheader("Calculated Metrics (Preview)")
+    st.dataframe(
+        df[['likes_count', 'comments_count', 'shares_count',
+            'interactions', 'interaction_per_impression']].head()
+    )
 
-show_kde = st.checkbox("Show KDE curve", value=True)
+    # ----------------------------
+    # METRIC SUMMARY
+    # ----------------------------
+    st.header("📌 Metrics Summary")
 
-fig, ax = plt.subplots(figsize=(10, 5))
-sns.histplot(
-    df[metric_choice],
-    bins=bin_size,
-    kde=show_kde,
-    ax=ax
-)
+    col1, col2 = st.columns(2)
 
-ax.set_title(f"Distribution of {metric_choice}")
-ax.set_xlabel(metric_choice)
-ax.set_ylabel("Frequency")
+    col1.metric(
+        "Average Engagement Rate",
+        f"{df['engagement_rate'].mean():.2f}%"
+    )
 
-st.pyplot(fig)
+    col2.metric(
+        "Average Interaction per Impression",
+        f"{df['interaction_per_impression'].mean():.2f}%"
+    )
 
-# ----------------------------
-# Insight Section
-# ----------------------------
-st.header("🧠 Key Insights")
+    # ----------------------------
+    # VISUALIZATION
+    # ----------------------------
+    st.header("📊 Visual Analysis")
 
-st.markdown(f"""
-- The **average engagement rate** is **{df['engagement_rate'].mean():.2f}%**, indicating the overall audience response to the content.
-- The **interaction per impression** metric shows how efficiently impressions are converted into active interactions.
-- Posts with higher interaction-per-impression values indicate stronger content relevance despite similar exposure levels.
-""")
+    metric_choice = st.selectbox(
+        "Select metric to visualize:",
+        ['engagement_rate', 'interaction_per_impression']
+    )
 
-# ----------------------------
-# Download Processed Data
-# ----------------------------
-st.header("⬇️ Download Processed Dataset")
+    bin_size = st.slider(
+        "Select number of bins:",
+        min_value=10,
+        max_value=60,
+        value=30,
+        step=5
+    )
 
-csv = df.to_csv(index=False).encode("utf-8")
+    show_kde = st.checkbox("Show KDE curve", value=True)
 
-st.download_button(
-    label="Download CSV",
-    data=csv,
-    file_name="social_media_engagement_processed.csv",
-    mime="text/csv"
-)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.histplot(
+        df[metric_choice],
+        bins=bin_size,
+        kde=show_kde,
+        ax=ax
+    )
+
+    ax.set_title(f"Distribution of {metric_choice}")
+    ax.set_xlabel(metric_choice)
+    ax.set_ylabel("Frequency")
+
+    st.pyplot(fig)
+
+    # ----------------------------
+    # INSIGHTS
+    # ----------------------------
+    st.header("🧠 Key Insights")
+
+    st.markdown(f"""
+    - The **average engagement rate** is **{df['engagement_rate'].mean():.2f}%**, showing overall audience response.
+    - **Interaction per impression** highlights how efficiently impressions convert into interactions.
+    - Higher interaction-per-impression values indicate stronger content relevance.
+    """)
+
+    # ----------------------------
+    # DOWNLOAD DATA
+    # ----------------------------
+    st.header("⬇️ Download Processed Dataset")
+
+    csv = df.to_csv(index=False).encode("utf-8")
+
+    st.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name="social_media_engagement_processed.csv",
+        mime="text/csv"
+    )
+    st.markdown("Click the button above to download the processed dataset.")
