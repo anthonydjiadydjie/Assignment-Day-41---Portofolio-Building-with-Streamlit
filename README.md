@@ -1,116 +1,154 @@
-# Assignment-Day-41---Portofolio-Building-with-Streamlit
-Repo untuk Assignment Day 41 - Portofolio Building with Streamlit
-📊 Social Media Engagement Dashboard
+📊 Social Media Engagement Analysis
 
-Tugas Portofolio – Building Portfolio with Streamlit
-Data Science Bootcamp Dibimbing
+Case Study – Social Media Engagement
+Data Analyst Bootcamp | Dibimbing
 
-Dibuat oleh : Anthony Djiady Djie
-Class : DS39+
-Topik : Extra Class 3 – Social Media Engagement Analysis
+Author: Anthony Djiady Djie
+Class: DS39+
 
-<!-- markdown-toc start - Don't edit this section -->
+📌 Deskripsi Project
 
-Daftar Isi
+Project ini merupakan case study Social Media Engagement Analysis yang bertujuan untuk
+menganalisis performa beberapa konten media sosial menggunakan data engagement seperti
+reach, impressions, likes, comments, shares, dan clicks.
 
-Deskripsi
+Analisis dilakukan dengan menghitung berbagai engagement metrics, membandingkan performa
+antar konten, serta memberikan interpretasi berbasis data untuk menilai efektivitas konten.
 
-Dataset
+Hasil analisis disajikan dalam bentuk dashboard interaktif menggunakan Streamlit agar
+mudah dipahami, termasuk oleh stakeholder non-teknis.
 
-Fitur Dashboard
+🎯 Tujuan Analisis
 
-Cara Menjalankan Aplikasi
+Project ini dibuat untuk memenuhi objectives pembelajaran pada modul
+Social Media Analytics, yaitu:
 
-Deployment
+Memahami konsep engagement dalam konteks media sosial
 
-Catatan
+Mengidentifikasi metrik engagement yang relevan
 
-<!-- markdown-toc end -->
-Deskripsi
+Menghitung engagement metrics menggunakan data aktual
 
-Project ini merupakan dashboard interaktif berbasis Streamlit yang digunakan untuk
-melakukan analisis engagement pada data media sosial.
-Tujuan dari dashboard ini adalah untuk membantu pengguna memahami performa konten
-berdasarkan metrik engagement seperti Likes, Comments, Shares, dan Engagement Rate.
+Membandingkan performa konten secara kuantitatif dan konsisten
 
-Dengan menggunakan dashboard ini, pengguna non-teknis dapat dengan mudah
-melihat insight data tanpa harus membuka notebook atau membaca kode Python.
+Menarik insight awal dari data engagement
 
-Dataset
+📁 Dataset
 
-Dataset yang digunakan merupakan data engagement media sosial yang berisi informasi seperti:
+Dataset yang digunakan berisi informasi performa konten media sosial, meliputi:
 
-Jenis konten
+Reach
 
-Jumlah likes
+Impressions
 
-Jumlah comments
+Likes
 
-Jumlah shares
+Comments
 
-Engagement rate
+Shares
 
-Dataset disimpan dalam folder:
+Clicks (jika tersedia)
+
+Dataset disimpan pada folder berikut:
 
 data/social_media_engagement.csv
 
-Fitur Dashboard
 
-Dashboard ini menggunakan beberapa basic components Streamlit, antara lain:
+Seluruh perhitungan dilakukan menggunakan angka aktual dari dataset, tanpa estimasi.
 
-Selectbox → memilih jenis konten
+📐 Metrik Engagement
 
-Slider → memfilter engagement rate
+Dalam analisis ini digunakan minimal 4 metrik engagement utama, yaitu:
 
-Checkbox → menampilkan / menyembunyikan data mentah
+1️⃣ Engagement Rate (ER)
 
-Metric → menampilkan ringkasan statistik
+Mengukur tingkat interaksi terhadap jangkauan konten.
 
-Interactive Chart → visualisasi engagement yang berubah sesuai input user
+2️⃣ Interaction-per-Reach (IPR)
 
-Fitur interaktif ini memungkinkan pengguna melakukan eksplorasi data secara fleksibel dan real-time.
+Menunjukkan efektivitas reach dalam menghasilkan interaksi.
 
-Cara Menjalankan Aplikasi
+3️⃣ Interaction-per-Impression (IPI)
 
-Pastikan Python sudah terinstall.
+Mengukur efisiensi impressions dalam menghasilkan interaksi.
 
-Clone repository ini:
+4️⃣ Click-Through Rate (CTR) (jika data tersedia)
 
-git clone https://github.com/USERNAME/streamlit-social-media-dashboard.git
+Mengukur seberapa sering pengguna melakukan klik setelah melihat konten.
 
+Setiap metrik dihitung dengan rumus yang jelas dan langkah perhitungan eksplisit sesuai
+dengan ketentuan assignment.
 
-Masuk ke folder project:
+🔄 Alur Analisis
 
-cd streamlit-social-media-dashboard
+Langkah-langkah analisis yang dilakukan dalam project ini:
 
+Eksplorasi Dataset
 
-Install dependency:
+Melihat struktur data
 
-pip install -r requirements.txt
+Statistik deskriptif
 
+Identifikasi missing values
 
-Jalankan aplikasi Streamlit:
+Data Cleaning
 
-streamlit run app.py
+Menangani missing values pada kolom numerik yang relevan
 
+Perhitungan Engagement Metrics
 
-Aplikasi akan terbuka otomatis di browser pada:
+Menghitung total interaksi
 
-http://localhost:8501
+Menghitung ER, IPR, IPI, dan CTR
 
-Deployment
+Perbandingan Performa Konten
 
-Aplikasi ini dideploy menggunakan Streamlit Community Cloud.
+Mengurutkan konten berdasarkan metrik engagement
 
-GitHub Repository:
-https://github.com/USERNAME/streamlit-social-media-dashboard
+Analisis berbasis angka
 
-Streamlit App:
-https://share.streamlit.io/USERNAME/streamlit-social-media-dashboard
+Interpretasi Hasil
 
-Catatan
+Identifikasi konten dengan engagement tertinggi
 
-Project ini dibuat sebagai bagian dari proses pembelajaran dan pengembangan portofolio.
-Seluruh analisis dilakukan untuk tujuan edukasi.
+Menemukan pola interaksi yang muncul
 
-Apabila terdapat kekurangan atau saran pengembangan, sangat terbuka untuk diskusi dan feedback 🙏
+📊 Dashboard Streamlit
+
+Hasil analisis ditampilkan melalui dashboard interaktif Streamlit dengan fitur:
+
+Sidebar navigation (Profil & Dashboard)
+
+Filter interaktif (selectbox, slider, checkbox)
+
+Ringkasan metrik utama
+
+Visualisasi distribusi engagement
+
+Tampilan data mentah
+
+Opsi download dataset hasil olahan
+
+Dashboard ini memungkinkan eksplorasi data tanpa perlu membuka notebook atau kode Python.
+
+🛠 Tools yang Digunakan
+
+Python
+
+Pandas & NumPy
+
+Matplotlib & Seaborn
+
+Streamlit
+
+VS Code
+
+Git & GitHub
+
+📝 Catatan
+
+Project ini dibuat sebagai bagian dari Data Analyst Bootcamp Dibimbing.
+Analisis dan insight yang dihasilkan bersifat deskriptif dan bertujuan untuk
+melatih pemahaman konsep engagement analysis, bukan sebagai rekomendasi strategi final.
+
+Masukan dan diskusi sangat terbuka untuk pengembangan lebih lanjut.
